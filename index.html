@@ -16,6 +16,58 @@
       overflow-x: hidden;
       min-height: 100vh;
       padding: 20px 0;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        radial-gradient(circle at 20% 80%, rgba(217, 121, 121, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 182, 193, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(255, 218, 221, 0.1) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .floating-hearts {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .heart {
+      position: absolute;
+      color: rgba(217, 121, 121, 0.3);
+      font-size: 20px;
+      animation: float 10s linear infinite;
+    }
+
+    .heart:nth-child(1) { left: 10%; animation-delay: 0s; }
+    .heart:nth-child(2) { left: 20%; animation-delay: 2s; font-size: 15px; }
+    .heart:nth-child(3) { left: 30%; animation-delay: 4s; }
+    .heart:nth-child(4) { left: 40%; animation-delay: 6s; font-size: 25px; }
+    .heart:nth-child(5) { left: 50%; animation-delay: 8s; }
+    .heart:nth-child(6) { left: 60%; animation-delay: 1s; font-size: 18px; }
+    .heart:nth-child(7) { left: 70%; animation-delay: 3s; }
+    .heart:nth-child(8) { left: 80%; animation-delay: 5s; font-size: 22px; }
+    .heart:nth-child(9) { left: 90%; animation-delay: 7s; }
+    .heart:nth-child(10) { left: 15%; animation-delay: 9s; font-size: 16px; }
+
+    @keyframes float {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
     }
 
     .book-container {
@@ -37,11 +89,12 @@
       position: absolute;
       width: 50%;
       height: 100%;
-      background: white;
-      box-shadow: 0 0 25px rgba(0, 0, 0, 0.15);
+      background: linear-gradient(145deg, #ffffff 0%, #fefefe 100%);
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.8);
       transform-origin: left center;
       transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       backface-visibility: hidden;
+      border-radius: 5px 0 0 5px;
     }
 
     .page-left {
@@ -52,6 +105,9 @@
     .page-right {
       right: 0;
       border-left: 1px solid #f0f0f0;
+      border-radius: 0 5px 5px 0;
+      background: linear-gradient(145deg, #ffffff 0%, #fefefe 100%);
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.8);
     }
 
     .page.flipped {
@@ -73,6 +129,39 @@
       }
 
       to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideInLeft {
+      from {
+        transform: translateX(-50px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideInRight {
+      from {
+        transform: translateX(50px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideInUp {
+      from {
+        transform: translateY(30px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
         opacity: 1;
       }
     }
@@ -146,6 +235,7 @@
       font-size: 36px;
       color: #333;
       margin: 5px 0;
+      animation: slideInUp 1s ease-out 0.5s both;
     }
 
     .bride-name {
@@ -154,12 +244,33 @@
       color: #d97979;
       margin: 10px 0;
       line-height: 1;
+      animation: slideInUp 1s ease-out 0.7s both;
+      position: relative;
+    }
+
+    .bride-name::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #d97979, transparent);
+      animation: sparkle 2s ease-in-out 1.5s both;
+    }
+
+    @keyframes sparkle {
+      0% { width: 0; }
+      50% { width: 100%; }
+      100% { width: 100%; opacity: 0; }
     }
 
     .wedding-date {
       font-size: 20px;
       color: #666;
       margin: 15px 0;
+      animation: slideInUp 1s ease-out 0.9s both;
     }
 
     .flower-box {
@@ -292,6 +403,36 @@
       align-items: center;
       justify-content: center;
       color: #999;
+      transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .profile-photo::before {
+      content: '💕';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      font-size: 60px;
+      opacity: 0;
+      transition: all 0.5s ease;
+    }
+
+    .profile-photo:hover {
+      transform: scale(1.1);
+      box-shadow: 0 15px 40px rgba(217, 121, 121, 0.4);
+      border-color: #c66868;
+    }
+
+    .profile-photo:hover::before {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .profile-photo:hover i {
+      opacity: 0;
     }
 
     .profile-name {
@@ -334,6 +475,41 @@
       align-items: center;
       justify-content: center;
       color: #999;
+      transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .photo-placeholder::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(217, 121, 121, 0.1), rgba(255, 182, 193, 0.1));
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .photo-placeholder:hover {
+      transform: scale(1.05) rotate(2deg);
+      box-shadow: 0 10px 30px rgba(217, 121, 121, 0.3);
+      border-color: #d97979;
+    }
+
+    .photo-placeholder:hover::before {
+      opacity: 1;
+    }
+
+    .photo-placeholder:hover i {
+      animation: heartBeat 1s infinite;
+    }
+
+    @keyframes heartBeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
     }
 
     .story-text {
@@ -461,6 +637,16 @@
       font-family: 'Dancing Script', cursive;
       font-size: 42px;
       margin-bottom: 10px;
+      background: linear-gradient(45deg, #d97979, #ffb6c1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 5px rgba(217, 121, 121, 0.5); }
+      to { text-shadow: 0 0 20px rgba(217, 121, 121, 0.8), 0 0 30px rgba(217, 121, 121, 0.6); }
     }
 
     .rsvp-subtitle {
@@ -530,22 +716,39 @@
     }
 
     .nav-btn {
-      background: #d97979;
+      background: linear-gradient(135deg, #d97979, #c66868);
       color: white;
       border: none;
       padding: 12px 35px;
       border-radius: 30px;
       cursor: pointer;
       font-size: 15px;
-      transition: all 0.3s;
+      transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       box-shadow: 0 4px 15px rgba(217, 121, 121, 0.3);
       font-weight: 500;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
     }
 
     .nav-btn:hover:not(:disabled) {
-      background: #c66868;
+      background: linear-gradient(135deg, #c66868, #b55757);
       transform: translateY(-2px);
       box-shadow: 0 6px 20px rgba(217, 121, 121, 0.4);
+    }
+
+    .nav-btn:hover:not(:disabled)::before {
+      left: 100%;
     }
 
     .nav-btn:disabled {
@@ -579,6 +782,19 @@
 </head>
 
 <body>
+  <div class="floating-hearts">
+    <div class="heart">💖</div>
+    <div class="heart">💕</div>
+    <div class="heart">💗</div>
+    <div class="heart">💓</div>
+    <div class="heart">💞</div>
+    <div class="heart">💘</div>
+    <div class="heart">💝</div>
+    <div class="heart">💟</div>
+    <div class="heart">❣️</div>
+    <div class="heart">♥️</div>
+  </div>
+
   <div class="container">
     <div class="book-container">
       <div class="book" id="book">
